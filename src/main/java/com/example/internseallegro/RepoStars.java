@@ -25,11 +25,18 @@ public class RepoStars {
     private static final Logger log = LoggerFactory.getLogger(RepoStars.class);
 
     private final String login;
-    public Stars[] stars;
+    public Stars[] repos;
+    public int sumOfStars(){
+        int sumOfStars = 0;
+        for (Stars r:repos){
+            sumOfStars+=r.stargazers_count;
+        }
+        return sumOfStars;
+    }
     public RepoStars(String lg){
         //simple regex to filter out non-alphanumerical symbols excluding hyphens
         login = lg.replaceAll("([^A-Za-z0-9-])*","");
-        stars = downloadRepos();
+        repos = downloadRepos();
     }
     private Stars[] downloadRepos(){
         RestTemplate restTemplate = (new RestTemplateBuilder()).build();
@@ -40,7 +47,7 @@ public class RepoStars {
     @Override
     public String toString(){
         StringBuilder stringBuilder = new StringBuilder();
-        for(Stars s:stars){
+        for(Stars s:repos){
             stringBuilder.append(s.full_name).append(" ").append(s.stargazers_count).append('\n');
         }
         return stringBuilder.toString();
