@@ -7,8 +7,6 @@ import org.springframework.web.client.RestTemplate;
 
 
 public class RepoArray {
-    private static final Logger log = LoggerFactory.getLogger(RepoArray.class);
-
     private final String login;
     private final RepoData[] repos;
     public int sumOfStars(){
@@ -33,7 +31,7 @@ public class RepoArray {
         return s;
     }
     /*
-     * Function that convert this object to
+     * Function that convert this object to string
      */
     @Override
     public String toString(){
