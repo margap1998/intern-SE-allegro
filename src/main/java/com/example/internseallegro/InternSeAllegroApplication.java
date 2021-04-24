@@ -13,12 +13,9 @@ public class InternSeAllegroApplication {
     public static void main(String[] args) {
         SpringApplication.run(InternSeAllegroApplication.class, args);
     }
+
     @GetMapping("/")
-    public void start(){
-
-    }
-    @GetMapping("/error")
-    public void error(){
-
+    public String[] start(){
+        return new String[]{"/","/repos/{login}","/stars/{login}","/json/repos/{login}","/json/stars/{login}"};
     }
 }

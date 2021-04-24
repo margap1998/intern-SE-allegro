@@ -2,33 +2,40 @@ package com.example.internseallegro;
 
 import org.springframework.web.bind.MissingRequestValueException;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
 public class RepoController {
-    @GetMapping("/stars")
-    public int starCount(@RequestParam(value = "login",defaultValue = "") String login) throws MissingRequestValueException {
+    @GetMapping("/stars/{login}")
+    public String starCount(@PathVariable String login) throws MissingRequestValueException {
         if(login.contentEquals("")){
             throw new MissingRequestValueException("Missing username");
         }//Exception thrown if someone forget to put username in request path
-        int sumOfStars = (new RepoStars(login)).sumOfStars();
-        return sumOfStars;
+        int st = (new RepoArray(login)).sumOfStars();
+        return String.valueOf(st);
+    }
+    @GetMapping("/json/stars/{login}")
+    public StarsSum starCountJSON(@PathVariable String login) throws MissingRequestValueException {
+        if(login.contentEquals("")){
+            throw new MissingRequestValueException("Missing username");
+        }//Exception thrown if someone forget to put username in request path
+        return new StarsSum((new RepoArray(login)).sumOfStars());
     }
 
-    @GetMapping("/json/repos")
-    public Stars[] repos(@RequestParam(value = "login",defaultValue = "") String login) throws MissingRequestValueException {
+    @GetMapping("/json/repos/{login}")
+    public RepoData[] repos(@PathVariable String login) throws MissingRequestValueException {
         if(login.contentEquals("")){
             throw new MissingRequestValueException("Missing username");
         }//Exception thrown if someone forget to put username in request path
-        return (new RepoStars(login)).repos;
+        return (new RepoArray(login)).getRepos();
     }
-    @GetMapping("/repos")
-    public String reposRaw(@RequestParam(value = "login",defaultValue = "") String login) throws MissingRequestValueException {
+    @GetMapping("/repos/{login}")
+    public String reposRaw(@PathVariable String login) throws MissingRequestValueException {
         if(login.contentEquals("")){
             throw new MissingRequestValueException("Missing username");
         }//Exception thrown if someone forget to put username in request path
-        return (new RepoStars(login)).toString();
+        return (new RepoArray(login)).toString();
     }
 }
