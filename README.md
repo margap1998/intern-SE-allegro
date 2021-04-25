@@ -7,9 +7,9 @@ Do wykonania zadania użyłem Javy 11, Spring Boota i Mavena. Dzięki narzędziu
 3. Aby uruchomić program, wystarczy komenda "./mvnw spring-boot:run"(Linux) lub "mvnw spring-boot:run"(Windows). W przypadku problemów, konieczne będzie uruchomienie skryptu z podwyżsonymi uprawnieniami.
 
 Aplikacja domyślnie ma wbudowany serwer Apache Tomcat i zajmuje port 8080. Port można zmienić ustawiając zmienną środowiskową $SERVER_PORT bez przebudowy lub wartość "server.port" w  "{katalog projektu}/src/main/resources/application.properties" i przebudować.
-
+REST API GitHuba posiada ograniczenie na liczbę możliwych zapytań. Wtedy konieczne będzie podanie tokenu bezpieczeństa. Wtedy przechodzimy do punktu 4.
 #### Nieobowiązkowe
-4. Można także utworzyć JAR-a za pomocą komendy "./mvnw package"(Linux) i uruchomić otrzymany pakiet poleceniem "java -jar".
+4. Można także utworzyć JAR-a za pomocą komendy "./mvnw package"(Linux) i uruchomić otrzymany pakiet poleceniem "java -jar {nazwa pakietu}". Możemy podać po "{nazwa pakietu}" jako argument nasz własny token bezpieczeństwa, który może odblokować REST API.
 
 # UŻYWANIE
 Aplikacja działa jako serwer udostępniający następujące końcówki:

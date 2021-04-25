@@ -1,14 +1,15 @@
 package com.example.internseallegro;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Arrays;
+import java.util.LinkedList;
 
 
 public class RepoArray {
     private final String login;
-    private final RepoData[] repos;
+    private final LinkedList<RepoData> repos;
     public int sumOfStars(){
         int sumOfStars = 0;
         for (RepoData r:repos){
@@ -24,11 +25,22 @@ public class RepoArray {
     /*
      * Function that downloads data form GitHub API
      */
-    private RepoData[] downloadRepos(){
-        RestTemplate restTemplate = (new RestTemplateBuilder()).build();
-        RepoData[] s = restTemplate.getForEntity("https://api.github.com/users/"+ login +"/repos", RepoData[].class).getBody();
-        assert s != null;
-        return s;
+    private LinkedList<RepoData> downloadRepos(){
+        RestTemplateBuilder rtb = new RestTemplateBuilder();
+        if (InternSeAllegroApplication.token.equals("")){
+            rtb = rtb.defaultHeader("Authorization","token "+InternSeAllegroApplication.token);
+        }
+        RestTemplate restTemplate = rtb.build();
+        int page =1;
+        LinkedList<RepoData> a = new LinkedList<>();
+        while (true) {
+            RepoData[] r = restTemplate.getForEntity("https://api.github.com/users/" + login + "/repos?per_page=100&page="+ page, RepoData[].class).getBody();
+            if (r == null) {break;}
+            if (r.length == 0) {break;}
+            page+=1;
+            a.addAll(Arrays.asList(r));
+        }
+        return a;
     }
     /*
      * Function that convert this object to string
@@ -42,6 +54,7 @@ public class RepoArray {
         return stringBuilder.toString();
     }
     public RepoData[] getRepos(){
-        return repos;
+        RepoData[] a = new RepoData[repos.size()];
+        return repos.toArray(a);
     }
 }
